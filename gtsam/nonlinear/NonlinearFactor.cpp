@@ -1,6 +1,6 @@
 /* ----------------------------------------------------------------------------
 
- * GTSAM Copyright 2010, Georgia Tech Research Corporation, 
+ * GTSAM Copyright 2010, Georgia Tech Research Corporation,
  * Atlanta, Georgia 30332-0415
  * All Rights Reserved
  * Authors: Frank Dellaert, et al. (see THANKS for the full author list)
@@ -91,6 +91,28 @@ Vector NoiseModelFactor::whitenedError(const Values& c) const {
   const Vector b = unwhitenedError(c);
   check(noiseModel_, b.size());
   return noiseModel_ ? noiseModel_->whiten(b) : b;
+}
+
+/* ************************************************************************* */
+Vector NoiseModelFactor::unweightedWhitenedError(const Values& c) const {
+  const Vector b = unwhitenedError(c);
+  check(noiseModel_, b.size());
+  return noiseModel_ ? noiseModel_->unweightedWhiten(b) : b;
+}
+
+/* ************************************************************************* */
+double NoiseModelFactor::weight(const Values& c) const {
+  if (active(c)) {
+    if (noiseModel_) {
+      const Vector b = unwhitenedError(c);
+      check(noiseModel_, b.size());
+      return 0.5 * noiseModel_->weight(b);
+    }
+    else
+      return 1.0;
+  } else {
+    return 0.0;
+  }
 }
 
 /* ************************************************************************* */

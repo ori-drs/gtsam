@@ -38,12 +38,12 @@ bool Method::addOverload(Str name, const ArgumentList& args,
     is_const_ = is_const;
   else if (is_const && !is_const_)
     throw std::runtime_error(
-        "Method::addOverload now designated as const whereas before it was "
-        "not");
+        "Method::addOverload: " + name +
+        " now designated as const whereas before it was not");
   else if (!is_const && is_const_)
     throw std::runtime_error(
-        "Method::addOverload now designated as non-const whereas before it "
-        "was");
+        "Method::addOverload: " + name +
+        " now designated as non-const whereas before it was");
   return first;
 }
 
@@ -64,8 +64,8 @@ string Method::wrapper_call(FileWriter& wrapperFile, Str cppClassName,
                   << "\",nargout,nargin-1," << args.size() << ");\n";
 
   // get class pointer
-  // example: shared_ptr<Test> = unwrap_shared_ptr< Test >(in[0], "Test");
-  wrapperFile.oss << "  Shared obj = unwrap_shared_ptr<" << cppClassName
+  // example: auto obj = unwrap_shared_ptr< Test >(in[0], "Test");
+  wrapperFile.oss << "  auto obj = unwrap_shared_ptr<" << cppClassName
                   << ">(in[0], \"ptr_" << matlabUniqueName << "\");" << endl;
 
   // unwrap arguments, see Argument.cpp, we start at 1 as first is obj

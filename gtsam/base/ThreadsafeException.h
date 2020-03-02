@@ -1,6 +1,6 @@
 /* ----------------------------------------------------------------------------
 
- * GTSAM Copyright 2010, Georgia Tech Research Corporation, 
+ * GTSAM Copyright 2010, Georgia Tech Research Corporation,
  * Atlanta, Georgia 30332-0415
  * All Rights Reserved
  * Authors: Frank Dellaert, et al. (see THANKS for the full author list)
@@ -22,6 +22,7 @@
 #include <gtsam/config.h> // for GTSAM_USE_TBB
 
 #include <boost/optional/optional.hpp>
+#include <gtsam/dllexport.h>
 #include <string>
 #include <typeinfo>
 
@@ -117,7 +118,7 @@ public:
 };
 
 /// Thread-safe runtime error exception
-class RuntimeErrorThreadsafe: public ThreadsafeException<RuntimeErrorThreadsafe> {
+class GTSAM_EXPORT RuntimeErrorThreadsafe: public ThreadsafeException<RuntimeErrorThreadsafe> {
 public:
   /// Construct with a string describing the exception
   RuntimeErrorThreadsafe(const std::string& description) :

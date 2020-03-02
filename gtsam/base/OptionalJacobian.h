@@ -1,6 +1,6 @@
 /* ----------------------------------------------------------------------------
 
- * GTSAM Copyright 2010, Georgia Tech Research Corporation, 
+ * GTSAM Copyright 2010, Georgia Tech Research Corporation,
  * Atlanta, Georgia 30332-0415
  * All Rights Reserved
  * Authors: Frank Dellaert, et al. (see THANKS for the full author list)
@@ -176,10 +176,11 @@ public:
     pointer_(NULL) {
   }
 
-  /// Constructor that will resize a dynamic matrix (unless already correct)
-  OptionalJacobian(Eigen::MatrixXd& dynamic) :
-      pointer_(&dynamic) {
-  }
+  /// Construct from pointer to dynamic matrix
+  OptionalJacobian(Jacobian* pointer) : pointer_(pointer) {}
+
+  /// Construct from refrence to dynamic matrix
+  OptionalJacobian(Jacobian& dynamic) : pointer_(&dynamic) {}
 
 #ifndef OPTIONALJACOBIAN_NOBOOST
 

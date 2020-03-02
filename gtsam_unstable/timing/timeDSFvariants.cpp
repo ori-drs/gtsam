@@ -1,6 +1,6 @@
 /* ----------------------------------------------------------------------------
 
- * GTSAM Copyright 2010, Georgia Tech Research Corporation, 
+ * GTSAM Copyright 2010, Georgia Tech Research Corporation,
  * Atlanta, Georgia 30332-0415
  * All Rights Reserved
  * Authors: Frank Dellaert, et al. (see THANKS for the full author list)
@@ -18,15 +18,15 @@
 
 #include <gtsam/base/DSFVector.h>
 #include <gtsam_unstable/base/DSF.h>
-#include <gtsam_unstable/base/DSFMap.h>
+#include <gtsam/base/DSFMap.h>
 
-#include <boost/random.hpp>
 #include <boost/timer.hpp>
 #include <boost/format.hpp>
 #include <boost/assign/std/vector.hpp>
 
-#include <iostream>
 #include <fstream>
+#include <iostream>
+#include <random>
 #include <vector>
 #include <utility>
 
@@ -59,13 +59,14 @@ int main(int argc, char* argv[]) {
     cout << format("\nTesting with %1% images, %2% points, %3% matches\n")
             % (int)m % (int)N % (int)nm;
     cout << "Generating " << nm << " matches" << endl;
-    boost::variate_generator<boost::mt19937, boost::uniform_int<size_t> > rn(
-        boost::mt19937(), boost::uniform_int<size_t>(0, N - 1));
+    std::mt19937 rng;
+    std::uniform_int_distribution<> rn(0, N - 1);
+ 
     typedef pair<size_t, size_t> Match;
     vector<Match> matches;
     matches.reserve(nm);
     for (size_t k = 0; k < nm; k++)
-      matches.push_back(Match(rn(), rn()));
+      matches.push_back(Match(rn(rng), rn(rng)));
 
     os << format("%1%,%2%,%3%,") % (int)m % (int)N % (int)nm;
 

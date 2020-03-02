@@ -104,6 +104,20 @@ Rot3 slow_but_correct_Rodrigues(const Vector& w) {
 }
 
 /* ************************************************************************* */
+TEST( Rot3, AxisAngle)
+{
+  Vector axis = Vector3(0., 1., 0.); // rotation around Y
+  double angle = 3.14 / 4.0;
+  Rot3 expected(0.707388, 0, 0.706825,
+                       0, 1,        0,
+               -0.706825, 0, 0.707388);
+  Rot3 actual = Rot3::AxisAngle(axis, angle);
+  CHECK(assert_equal(expected,actual,1e-5));
+  Rot3 actual2 = Rot3::AxisAngle(axis, angle-2*M_PI);
+  CHECK(assert_equal(expected,actual2,1e-5));
+}
+
+/* ************************************************************************* */
 TEST( Rot3, Rodrigues)
 {
   Rot3 R1 = Rot3::Rodrigues(epsilon, 0, 0);
@@ -629,6 +643,22 @@ TEST(Rot3 , ChartDerivatives) {
     CHECK_CHART_DERIVATIVES(T1,T2);
     CHECK_CHART_DERIVATIVES(T2,T1);
   }
+}
+
+/* ************************************************************************* */
+TEST(Rot3, ClosestTo) {
+  Matrix3 M;
+  M << 0.79067393, 0.6051136, -0.0930814,   //
+      0.4155925, -0.64214347, -0.64324489,  //
+      -0.44948549, 0.47046326, -0.75917576;
+
+  Matrix expected(3, 3);
+  expected << 0.790687, 0.605096, -0.0931312,  //
+      0.415746, -0.642355, -0.643844,          //
+      -0.449411, 0.47036, -0.759468;
+
+  auto actual = Rot3::ClosestTo(3*M);
+  EXPECT(assert_equal(expected, actual.matrix(), 1e-6));
 }
 
 /* ************************************************************************* */
